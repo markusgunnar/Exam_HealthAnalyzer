@@ -119,21 +119,54 @@ class HealthAnalyzer:
 		"""
 		return self.df[_category]
 
-	def compare_sick(self):
+	def sick_rate(self, _data):
 		"""
-		Compares the sickness rate between _a to _b
+		Returns the rate of sick people
 		"""
-		actual_sick = len(self.df[self.df["disease"] == 1])
-		actuaL_not_sick = len(self.df) - actual_sick
-		sick_rate = actual_sick / len(self.df)
+		sick = len(_data[_data["disease"] == 1])
+		sick_rate = sick / len(_data)
 
 		return sick_rate
+	
+	def male_rate(self, _data):
+		"""
+		Returns the rate of males
+		"""
+		males = len(_data[_data["sex"] == "M"])
+		male_rate = males / len(_data)
 
-	def simulate_data(self):
+		return male_rate
+	
+	def smoker_rate(self, _data):
+		"""
+		Returns the rate of smokers
+		"""
+		smokers = len(_data[_data["smoker"] == "Yes"])
+		smoker_rate = smokers / len(_data)
+
+		return smoker_rate
+
+	def simulate_data(self, _nr):
 		"""
 		Simulates _n number of rows with the desc_analysis data to keep the mean, median, min, max and std on average
+		Args:
+			_nr (int): number of simulated people to make
+		Returns:
+			sim_df (DataFrame): Simulated DataFrame containing _nr of people
 		"""
-		pass
+		sim_df = pd.DataFrame()
+		sim_df["id"] = range(1, _nr + 1)
+		sim_df["age"] = np.random.normal(self.df["age"].mean(), self.df["age"].std(), _nr).round().astype(int)
+		sim_df["sex"] = np.random.choice(["M", "F"], _nr, p=[self.male_rate(self.data()), 1 - self.male_rate(self.data())])
+		sim_df["weight"] = np.random.normal(self.df["weight"].mean(), self.df["weight"].std(), _nr).round(2).astype(float)
+		sim_df["height"] = np.random.normal(self.df["height"].mean(), self.df["height"].std(), _nr).round(2).astype(float)
+		sim_df["systolic_bp"] = np.random.normal(self.df["systolic_bp"].mean(), self.df["systolic_bp"].std(), _nr).round(2).astype(float)
+		sim_df["cholesterol"] = np.random.normal(self.df["cholesterol"].mean(), self.df["cholesterol"].std(), _nr).round(2).astype(float)
+		sim_df["smoker"] = np.random.choice(["Yes", "No"], _nr, p=[self.smoker_rate(self.data()), 1 - self.smoker_rate(self.data())])
+		sim_df["disease"] = np.random.choice([1, 0], _nr, p=[self.sick_rate(self.data()), 1 - self.sick_rate(self.data())])
+
+		return sim_df
+
 
 	def data(self) -> pd.DataFrame:
 		"""
