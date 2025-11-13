@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
+from scipy import stats
 
 def plot_histogram(_data, _mask, _bins=30, _colors=["skyblue"]):
 	"""
@@ -60,21 +61,26 @@ def plot_barplot(_data, _cat: str, _cat_groups: list):
 	ax.grid(axis="y")
 	plt.show()
 
-def plot_normal_pdf(_x, _m, _s):
+def lin_regress(_data, _data_groups):
 	"""
-	Calculates th y-values for the normal probability density function given x-values, mean and standard deviation.
+	Plots a linear regression line over the given data and groups
 	Args:
-		_x (array-like): x-values
-		_m (float): Mean
-		_s (float): Standard deviation
-	Returns:
-		y (array-like): y-values
+		_data (DataFrame): DataFrame containing the data
+		_data_groups (list): List of 2 strings containing the 
+		column name for the date used for x and y-values
 	"""
-	_x = np.asarray(_x, dtype=float)
-	if _s <= 0 or not np.isfinite(_s):
-		raise ValueError("Standard deviation must be positive and finite!")
-	
-	norm = 1.0 / (_s * np.sqrt(2.0 * np.pi))
-	z = (_x - _m) / _s
-	y = norm * np.exp(-0.5 * z ** 2)
-	return y
+	rng = np.random.default_rng()
+
+	x = _data[_data_groups[0]]
+	y = _data[_data_groups[1]]
+
+	res = stats.linregress(x, y)
+
+	fig, ax = plt.subplots(figsize=(9, 5))
+	ax.plot(x, y, "o", label="Original data")
+	ax.plot(x, res.intercept + res.slope * x, "r", label="Best fit line")
+	ax.set_xlabel(_data_groups[0])
+	ax.set_ylabel(_data_groups[1])
+	ax.set_title(f"{_data_groups[1]} over {_data_groups[0]}")
+	ax.legend()
+	plt.show()
