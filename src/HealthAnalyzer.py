@@ -2,10 +2,18 @@ import pandas as pd, matplotlib.pyplot as plt, numpy as np
 
 class HealthAnalyzer:
 	def __init__(self) -> None:
+		"""
+		Initializes a DataFrame and a default mask that is used.
+		"""
 		self.df = pd.DataFrame
 		self.mask = ["age", "weight", "height", "systolic_bp", "cholesterol"]
 
 	def read_csv(self, _path: str) -> None:
+		"""
+		Reads a .csv file and loads it to self.df given a path
+		Args:
+			_path (str): path to .csv file
+		"""
 		try:
 			self.df = pd.read_csv(_path)
 			print(f"File '{_path}' read successfully!")
@@ -122,6 +130,8 @@ class HealthAnalyzer:
 	def sick_rate(self, _data):
 		"""
 		Returns the rate of sick people
+		Returns:
+			sick_rate (float): the percentage of sick people
 		"""
 		sick = len(_data[_data["disease"] == 1])
 		sick_rate = sick / len(_data)
@@ -131,6 +141,8 @@ class HealthAnalyzer:
 	def male_rate(self, _data):
 		"""
 		Returns the rate of males
+		Returns:
+			male_rate (float): the percentage of male people
 		"""
 		males = len(_data[_data["sex"] == "M"])
 		male_rate = males / len(_data)
@@ -140,6 +152,8 @@ class HealthAnalyzer:
 	def smoker_rate(self, _data):
 		"""
 		Returns the rate of smokers
+		Returns:
+			smoker_rate (float): the percentage of smoker people
 		"""
 		smokers = len(_data[_data["smoker"] == "Yes"])
 		smoker_rate = smokers / len(_data)
@@ -166,7 +180,6 @@ class HealthAnalyzer:
 		sim_df["disease"] = np.random.choice([1, 0], _nr, p=[self.sick_rate(self.data()), 1 - self.sick_rate(self.data())])
 
 		return sim_df
-
 
 	def data(self) -> pd.DataFrame:
 		"""

@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import numpy as np
 
 def plot_histogram(_data, _mask, _bins=30, _colors=["skyblue"]):
 	"""
@@ -59,5 +60,21 @@ def plot_barplot(_data, _cat: str, _cat_groups: list):
 	ax.grid(axis="y")
 	plt.show()
 
-def plot_normal_pdf():
-	pass
+def plot_normal_pdf(_x, _m, _s):
+	"""
+	Calculates th y-values for the normal probability density function given x-values, mean and standard deviation.
+	Args:
+		_x (array-like): x-values
+		_m (float): Mean
+		_s (float): Standard deviation
+	Returns:
+		y (array-like): y-values
+	"""
+	_x = np.asarray(_x, dtype=float)
+	if _s <= 0 or not np.isfinite(_s):
+		raise ValueError("Standard deviation must be positive and finite!")
+	
+	norm = 1.0 / (_s * np.sqrt(2.0 * np.pi))
+	z = (_x - _m) / _s
+	y = norm * np.exp(-0.5 * z ** 2)
+	return y
