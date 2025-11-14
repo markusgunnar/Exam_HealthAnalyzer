@@ -1,7 +1,7 @@
 import numpy as np
 from scipy import stats
 
-def normal_ci95(_sample):
+def normal_ci95(_sample) -> tuple:
 		"""
 		Calculates the 95% confidence interval for the mean using the normal approximation method.
 		Bounds: mean ± 1.96 * (std / sqrt(n))
@@ -17,7 +17,7 @@ def normal_ci95(_sample):
 		error = z_crit * (std / np.sqrt(len(_sample)))
 		return float(mean - error), float(mean + error), float(mean), float(std)
 
-def bootstrap_ci95(_sample, _resample_size=5000, _confidence=0.95):
+def bootstrap_ci95(_sample, _resample_size=5000, _confidence=0.95) -> tuple:
 	"""
 	Calculates the 95% confidence interval for the mean using the normal approximation method.
 	Bounds: mean ± 1.96 * (std / sqrt(n))
@@ -37,7 +37,7 @@ def bootstrap_ci95(_sample, _resample_size=5000, _confidence=0.95):
 	lo, hi = np.percentile(boot_means, [100.0*alpha, 100.0*(1.0 - alpha)])
 	return float(lo), float(hi), float(_sample.mean()), float(_sample.std())
 
-def sample_mean(_sample):
+def sample_mean(_sample) -> tuple:
 	"""
 	Calculates and returns the mean of the given sample
 	Args:
@@ -47,7 +47,7 @@ def sample_mean(_sample):
 	"""
 	return np.mean(np.random.choice(_sample, size=len(_sample), replace=False))
 
-def standard_t_test(_group_a, _group_b, _tail):
+def standard_t_test(_group_a, _group_b, _tail) -> tuple:
 	"""
 	Calculates and returns the t and p-values using a two-sample t-test given two groups and tail
 	Args:

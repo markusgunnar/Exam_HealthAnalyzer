@@ -100,7 +100,7 @@ class HealthAnalyzer:
 		else:
 			return self.df[_mask].std()
 
-	def desc_analysis(self):
+	def desc_analysis(self) -> pd.DataFrame:
 		"""
 		Returns a DataFrame containing the mean, median, min and max
 		of the masked columns
@@ -127,7 +127,7 @@ class HealthAnalyzer:
 		"""
 		return self.df[_category]
 
-	def sick_rate(self, _data):
+	def sick_rate(self, _data) -> float:
 		"""
 		Returns the rate of sick people
 		Returns:
@@ -138,7 +138,7 @@ class HealthAnalyzer:
 
 		return sick_rate
 	
-	def male_rate(self, _data):
+	def male_rate(self, _data) -> float:
 		"""
 		Returns the rate of males
 		Returns:
@@ -149,7 +149,7 @@ class HealthAnalyzer:
 
 		return male_rate
 	
-	def smoker_rate(self, _data):
+	def smoker_rate(self, _data) -> float:
 		"""
 		Returns the rate of smokers
 		Returns:
@@ -160,7 +160,7 @@ class HealthAnalyzer:
 
 		return smoker_rate
 
-	def simulate_data(self, _nr):
+	def simulate_data(self, _nr) -> pd.DataFrame:
 		"""
 		Simulates _n number of rows with the desc_analysis data to keep the mean, median, min, max and std on average
 		Args:
